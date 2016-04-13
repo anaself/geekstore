@@ -1,0 +1,90 @@
+<div class="panel panel-success">
+
+<div class="panel-heading"><h4>List Of Products</h4></div>
+
+<div class="panel-body">
+
+<table style="border-radius: 1px;border-color: black" class="table">
+    <caption>List of products <span class="badge"><%= @products.size %></span> </caption>
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Products ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Color</th>
+            <th>Categories</th>
+            <th>Quantity</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @products.each do |product| %>
+            <tr>
+                <td><%= image_tag product.photo.url(:small) %></td>
+                <td><%= link_to "#{product.name}", action: 'show', id:product.id %></td>
+                <td><%= product.name %></td>
+                <td><%= product.price %></td>
+                <td><%= product.color %> </td>
+                <td>
+                  <% product.categories.each do |category| %>
+                    <a href=<%="/categories/#{category.id} "%> > <%=category.name%> </a>
+                  <%end%>
+                </td>
+                <!--<td data-product = <%=product.id%> ><%= number_field_tag 'quantity', nil, class: 'form-control bfh-number', value: '1', min: '1'%>
+                </td>-->
+                <td data-product = <%=product.id%>> <input type="number" id="test" class="form-control bfh-number" value="1" min="1" max="50"></td>
+
+                <td><%= link_to 'edit' , { action: 'edit' , controller: '/products' , id: product.id}%></td>
+            </tr>
+        <%end%>
+    </tbody>
+</table>
+</div>
+</div>
+
+<script>
+    function buy()
+    {
+    var $row = $(this).closest("tr"),       // Finds the closest row <tr>
+         $tds = $row.find("td");
+         $cel = $tds.eq(6);
+         $id = $cel.attr("data-product")
+         $quantity = $cel.children("input").val()
+
+    if($quantity < 100)
+    {
+      $.ajax({
+      method: "GET",
+        url: "basket/put",
+        data: {
+          product_id: $id,
+          product_quantity: $quantity
+        },
+        dataType: "html"
+      })
+    }
+
+    $.ajax({
+    method: "GET",
+      url: "/basket/basket_details",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+      });
+
+      $.ajax({
+    method: "GET",
+      url: "/basket/basket_modal",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#modal_basket").html(msg);
+      });
+
+
+   }
+</script>
+
+

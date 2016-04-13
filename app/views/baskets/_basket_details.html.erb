@@ -1,0 +1,42 @@
+
+<div class="panel panel-success">
+<div class="panel-heading">My Basket</div>
+
+  <div class="panel-body">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Cancel</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @basket.products.each do |product| %>
+            <tr>
+                <td><%= link_to "#{product.name}", action: 'show', controller: '/products', id:product.id %></td>
+                <td><%= @quantities[product.id]%></td>
+                <td><%= link_to  action: 'cancel_product', controller: '/baskets', product_id:product.id do%>
+                        <button class="btn btn-danger">Cancel</button>
+                    <%end%>
+                </td>
+            </tr>
+        <%end%>
+    </tbody>
+</table>
+
+</div>
+  <div class="panel-footer">    <h3 > Total price : <small> <%= @total_price.round(2) %> </small>
+  <button id="reset_basket" class="btn btn-warning">Reset Basket</button></h3>
+ </div>
+
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#test">
+  More details >>
+</button>
+<%= link_to action: 'export_to_csv', controller:'/products', format: 'csv' do %>
+    <button class="btn btn-warning"> <i class="fa fa-floppy-o"></i>CSV</button>
+
+<% end %>

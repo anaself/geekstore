@@ -1,0 +1,68 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <%= link_to "Secure Live Shopping", { action: 'list', controller: '/products'} ,{class: 'navbar-brand'}%>
+        </div>
+
+<% if user_signed_in?%>
+
+    <% @user = current_user%>
+    <% @categories = Category.all %>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <%@categories.first(5).each do |category| %>
+                    <li><%= link_to action: 'show', controller: '/categories', id: category.id do%>
+                    <%= category.name %><span class="badge"><%= category.products.size %></span>
+                    <% end %>  </li>
+                <% end %>
+                <li role="separator" class="divider"></li>
+                <li><%=link_to action: 'list', controller: '/categories' do%>See all  <span class="badge">
+                  <%= @categories.size %></span>
+                <% end %></li>
+                </ul>
+            </li>
+            <li><%= image_tag @user.photo.url(:small) , class:"img-circle" %></li>
+            <li><%=link_to current_user.email, edit_user_registration_path%></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "My Profile", action: 'profile', controller: '/users'%></li>
+                <li><%= link_to "Settings", edit_user_registration_path%></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+
+                <li><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>
+              </ul>
+            </li>
+        </ul>
+
+        <div class="row">
+        <div class="col-md-3 col-md-offset-3">
+            <form action="/search_product" class="search-form" style="margin-top: 1%" method="get" id="form_search">
+                <div class="form-group has-feedback">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search_product" placeholder="search" autocomplete="off">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </form>
+        </div>
+        </div>
+
+    </div>
+
+    </div>
+    <%end%>
+</nav>
+

@@ -1,0 +1,31 @@
+<div id="myModalImage" class="modal">
+
+<div class="modal-body">
+  <span class="close" id="span_close">×</span>
+  <%= image_tag @user.photo.url, id:'modal-content', alt:'Northern Lights, Norway', class: 'modal-content'%>
+  <div id="caption"></div>
+  </div>
+</div>
+
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModalImage');
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById('myImg');
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+    modal.style.display = "block";
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementById("span_close");
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+</script>
+

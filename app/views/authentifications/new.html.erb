@@ -1,0 +1,25 @@
+<h1> Authentification</h1>
+
+<h1>Sign In</h1>
+
+<div class="row">
+    <%= form_for(@user) do |f| %>
+
+      <div>
+        <%= f.label :email %>
+        <%= f.email_field :email %>
+      </div>
+
+      <div>
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+      </div>
+
+      <%= f.submit "Login", class: "btn btn-primary" %>
+
+    <% end %>
+
+</div>
+
+
+<%= link_to 'Back', authentifications_path %>

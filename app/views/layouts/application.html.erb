@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Secure Live Shopping</title>
+  <!-- Latest compiled and minified CSS -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+<%= stylesheet_link_tag "style" %>
+<!-- <%= javascript_include_tag "script" %> -->
+
+</head>
+
+
+<body>
+
+<%= render partial: "layouts/header_layout" %>
+
+<!--
+<% if user_signed_in?%>
+  <li><%= link_to "sign out", destroy_user_session_path, method: :delete%></li>
+<%else%>
+  <li> <%= link_to "sign in", new_user_session_path %></li>
+  <li><%= link_to "sign up", new_user_registration_path %></li>
+<p class="notice"><%= notice %></p>
+<%end%>
+-->
+
+<div class="row" style="margin-top:5% ">
+
+<div class="col-md-2" style="margin-right: 2%;position: relative ; height: 100px">
+<div style="position: fixed ;">
+  <% if user_signed_in?%>
+
+    <% @user = current_user %>
+    <%=render "users/show" %>
+
+  <% end %>
+</div>
+</div>
+
+<div class="col-md-7" id="container">
+<%= yield %>
+</div>
+
+<div class="col-md-2">
+<div style="float: right; position:fixed;" id="basket_details">
+  <% if user_signed_in?%>
+    <% @basket = current_user.basket %>
+    <% @quantities = @basket.products_quantities %>
+    <% @total_price = @basket.total_price.round(2) %>
+    <%=render "baskets/basket_details" %>
+  <% end %>
+</div>
+</div>
+</div>
+
+
+<% if user_signed_in?%>
+
+<div class="modal fade" id="test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">My Basket</h4>
+      </div>
+      <div class="modal-body" id="modal_basket">
+        <%=render "baskets/show" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" id="reset_basket_modal">Reset Basket</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%end%>
+
+</body>
+</html>
+
+
+<script>
+$(function() {
+
+  $('.but').click(function(){
+    var $row = $(this).closest("tr"),       // Finds the closest row <tr>
+         $tds = $row.find("td");
+         $cel = $tds.eq(6);
+         $id = $cel.attr("data-product")       // Finds all children <td> elements
+         $quantity = $cel.children("input").val()
+
+    if($quantity < 100)
+    {
+      $.ajax({
+      method: "GET",
+        url: "basket/put",
+        data: {
+          product_id: $id,
+          product_quantity: $quantity
+        },
+        dataType: "html"
+      })
+    }
+
+    $.ajax({
+    method: "GET",
+      url: "/basket/basket_details",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+      });
+
+      $.ajax({
+    method: "GET",
+      url: "/basket/basket_modal",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#modal_basket").html(msg);
+      });
+
+
+   })
+
+  $('#add_to_basket').click(function(){
+         $id = $("#product-quantity").attr("data-product")       // Finds all children <td> elements
+         $quantity = $("#product-quantity").val()
+
+    $.ajax({
+    method: "GET",
+      url: "/basket/put_resume",
+      data: {
+        product_id: $id,
+        product_quantity: $quantity
+      },
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+      });
+
+    $.ajax({
+    method: "GET",
+      url: "/basket/basket_details",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+      });
+
+    $.ajax({
+    method: "GET",
+      url: "/basket/basket_modal",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#modal_basket").html(msg);
+      });
+
+   })
+
+$('#reset_basket').click(function(){
+
+    $.ajax({
+    method: "GET",
+    url: "/basket/reset",
+    data: {
+      },
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+         })
+    })
+
+  $('#reset_basket_modal').click(function(){
+
+   $.ajax({
+    method: "GET",
+    url: "/basket/reset",
+    data: {
+      },
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#basket_details").html(msg);
+         })
+
+      $.ajax({
+    method: "GET",
+      url: "/basket/basket_modal",
+      dataType: "html"
+    })
+      .success(function(msg) {
+        $("#modal_basket").html(msg);
+      });
+
+    })
+
+  $( "#form_search" ).submit(function( event ) {
+
+    event.preventDefault();
+
+    $product = $("#search_product").val()
+
+    $.ajax({
+      method: "GET",
+        url: "/search_product",
+        data: {
+        search: $product,
+      },
+        dataType: "html"
+      })
+        .success(function(msg) {
+          $("#container").html(msg);
+        });
+  })
+
+
+});
+
+
+
+</script>

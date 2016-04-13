@@ -1,0 +1,45 @@
+<h1>Editing Product</h1>
+
+<div>
+    <%= form_for @product, url: {action: "update", id: @product.id } , html: { :multipart => true } do |product| %>
+
+      <div>
+        <%= product.label :name %>
+        <%= product.text_field :name %>
+      </div>
+
+      <div>
+        <%= product.label :price %>
+        <%= product.text_field :price %>
+      </div>
+
+      <div>
+        <%= product.label :color %>
+        <%= product.text_field :color %>
+      </div>
+
+      <%if @categories and @categories.any?%>
+          <% for category in @categories %>
+              <div>
+                  <%= check_box_tag "product[category_ids][]", category.id, @product.categories.include?(category) %>
+                  <%= category.name %>
+              </div>
+        <% end %>
+      <%end%>
+
+      <div>
+        <%= image_tag @product.photo.url(:medium) , { class:'ee'}%>
+      </div>
+
+      <div>
+        <%= product.file_field :photo %>
+      </div>
+
+      <%= file_field_tag "images[]", type: :file, multiple: true %>
+
+
+
+      <%= product.submit "Update my Product"%>
+    <% end %>
+
+</div>

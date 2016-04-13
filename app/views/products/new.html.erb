@@ -1,0 +1,35 @@
+<h1>New Product</h1>
+
+<div>
+    <%= form_for @product, url: {action: "create" } do |product| %>
+
+      <div>
+        <%= product.label :name %>
+        <%= product.text_field :name %>
+      </div>
+
+      <div>
+        <%= product.label :price %>
+        <%= product.text_field :price %>
+      </div>
+
+      <div>
+        <%= product.label :color %>
+        <%= product.text_field :color %>
+      </div>
+
+      <%if @categories and @categories.any?%>
+          <% for category in @categories %>
+              <div>
+                  <%= check_box_tag "product[category_ids][]", category.id, @product.categories.include?(category) %>
+                  <%= category.name %>
+              </div>
+        <% end %>
+      <%end%>
+
+      <%= product.submit "Add Product"%>
+    <% end %>
+
+</div>
+
+<%= link_to 'Back', products_path %>

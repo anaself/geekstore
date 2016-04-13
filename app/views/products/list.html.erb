@@ -1,0 +1,106 @@
+<div class="panel panel-success">
+
+<div class="panel-heading"><h4>List Of Products</h4></div>
+
+<div class="panel-body">
+
+<table style="border-radius: 1px;border-color: black" class="table">
+    <caption>List of products <span class="badge"><%= Product.count %></span> </caption>
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Products ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Color</th>
+            <th>Categories</th>
+            <th>Quantity</th>
+        <% if user_signed_in?%>
+            <th>Buy </th>
+        <% end %>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @products.each do |product| %>
+            <tr>
+                <td><%= image_tag product.photo.url(:small) %></td>
+                <td><%= link_to "#{product.name}", action: 'show', id:product.id %></td>
+                <td><%= product.name %></td>
+                <td><%= product.price %></td>
+                <td><%= product.color %> </td>
+                <td>
+                  <% product.categories.each do |category| %>
+                    <a href=<%="/categories/#{category.id} "%> > <%=category.name%> </a>
+                  <%end%>
+                </td>
+                <!--<td data-product = <%=product.id%>> <input type="number" class="form-control bfh-number" value="1" min="1" max="50"></td>-->
+                <td data-product = <%=product.id%> ><%= number_field_tag 'quantity', nil, class: 'form-control bfh-number', value: '1', min: '1'%>
+                </td>
+                <% if user_signed_in?%>
+                    <td><button class="but">Buy</button></td>
+                <%end%>
+                <td><%= link_to 'edit' , { action: 'edit' , controller: '/products' , id: product.id}%></td>
+            </tr>
+        <%end%>
+    </tbody>
+</table>
+</div>
+
+<div class="text-center">
+    <%= will_paginate @products, renderer: BootstrapPagination::Rails %>
+</div>
+</div>
+
+<div></div>
+<!--
+<% if user_signed_in?%>
+<div id="basket" style="margin-top: 5%">
+
+    <div class="panel panel-success">
+
+      <div class="panel-heading">My Basket</div>
+
+      <div class="panel-body">
+
+        <table class="table">
+        <caption>My Basket</caption>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Products ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @basket.products.each do |product| %>
+                    <tr>
+                        <td><%= image_tag product.photo.url(:small) %></td>
+                        <td><%= link_to "#{product.name}", action: 'edit', id:product.id %></td>
+                        <td><%= product.name %></td>
+                        <td><%= product.price %></td>
+                        <td><%= @quantity %></td>
+                        <td><%= link_to "cancel", action: 'cancel_product', controller: 'baskets', product_id:product.id %></td>
+                    </tr>
+                <%end%>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <% if !@basket.nil? %>
+            <h3 > Total price : <small> <%= @total_price %> </small> </h3>
+        <%end%>
+        </div>
+      <div class="panel-footer">Panel footer</div>
+    </div>
+
+</div>
+
+<%end%>
+-->
+<hr>
+

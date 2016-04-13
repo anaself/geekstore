@@ -1,0 +1,74 @@
+  [1m[36mActiveRecord::SchemaMigration Load (40.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36m (253.2ms)[0m  [1mDROP DATABASE IF EXISTS "special_test"[0m
+  [1m[35m (824.7ms)[0m  CREATE DATABASE "special_test" ENCODING = 'unicode'
+  [1m[36mSQL (0.3ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (107.8ms)[0m  CREATE TABLE "active_admin_comments" ("id" serial primary key, "namespace" character varying, "body" text, "resource_id" character varying NOT NULL, "resource_type" character varying NOT NULL, "author_id" integer, "author_type" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (63.7ms)[0m  [1mCREATE  INDEX  "index_active_admin_comments_on_author_type_and_author_id" ON "active_admin_comments" USING btree ("author_type", "author_id")[0m
+  [1m[35m (55.8ms)[0m  CREATE  INDEX  "index_active_admin_comments_on_namespace" ON "active_admin_comments" USING btree ("namespace")
+  [1m[36m (55.7ms)[0m  [1mCREATE  INDEX  "index_active_admin_comments_on_resource_type_and_resource_id" ON "active_admin_comments" USING btree ("resource_type", "resource_id")[0m
+  [1m[35m (89.1ms)[0m  CREATE TABLE "admin_users" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" inet, "last_sign_in_ip" inet) 
+  [1m[36m (55.6ms)[0m  [1mCREATE UNIQUE INDEX  "index_admin_users_on_email" ON "admin_users" USING btree ("email")[0m
+  [1m[35m (55.7ms)[0m  CREATE UNIQUE INDEX  "index_admin_users_on_reset_password_token" ON "admin_users" USING btree ("reset_password_token")
+  [1m[36m (98.3ms)[0m  [1mCREATE TABLE "authentifications" ("id" serial primary key, "local" json, "user_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (55.6ms)[0m  CREATE  INDEX  "index_authentifications_on_user_id" ON "authentifications" USING btree ("user_id")
+  [1m[36m (65.2ms)[0m  [1mCREATE TABLE "baskets" ("id" serial primary key, "user_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (55.6ms)[0m  CREATE  INDEX  "index_baskets_on_user_id" ON "baskets" USING btree ("user_id")
+  [1m[36m (65.3ms)[0m  [1mCREATE TABLE "baskets_products" ("id" serial primary key, "basket_id" integer, "product_id" integer, "quantity" integer) [0m
+  [1m[35m (72.4ms)[0m  CREATE  INDEX  "index_baskets_products_on_basket_id_and_product_id" ON "baskets_products" USING btree ("basket_id", "product_id")
+  [1m[36m (106.8ms)[0m  [1mCREATE TABLE "categories" ("id" serial primary key, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (6.7ms)[0m  CREATE TABLE "categories_products" ("category_id" integer, "product_id" integer) 
+  [1m[36m (72.6ms)[0m  [1mCREATE UNIQUE INDEX  "index_categories_products_on_category_id_and_product_id" ON "categories_products" USING btree ("category_id", "product_id")[0m
+  [1m[35m (115.1ms)[0m  CREATE TABLE "devices" ("id" serial primary key, "user_id" integer, "mac_adress" character varying, "operating_system" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "model" character varying) 
+  [1m[36m (55.3ms)[0m  [1mCREATE  INDEX  "index_devices_on_user_id" ON "devices" USING btree ("user_id")[0m
+  [1m[35m (90.1ms)[0m  CREATE TABLE "products" ("id" serial primary key, "name" character varying, "price" float, "quantity" float, "color" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "photo_file_name" character varying, "photo_content_type" character varying, "photo_file_size" integer, "photo_updated_at" timestamp) 
+  [1m[36m (97.3ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "first_name" character varying, "last_name" character varying, "phone" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" inet, "last_sign_in_ip" inet, "photo_file_name" character varying, "photo_content_type" character varying, "photo_file_size" integer, "photo_updated_at" timestamp) [0m
+  [1m[35m (55.7ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users" USING btree ("email")
+  [1m[36m (55.6ms)[0m  [1mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users" USING btree ("reset_password_token")[0m
+  [1m[35m (62.7ms)[0m  CREATE TABLE "schema_migrations" ("version" character varying NOT NULL) 
+  [1m[36m (64.2ms)[0m  [1mCREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")[0m
+  [1m[35m (0.4ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (7.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160318121050')[0m
+  [1m[35m (8.1ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160310101022')
+  [1m[36m (8.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160309150707')[0m
+  [1m[35m (8.2ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160317182541')
+  [1m[36m (8.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160311103549')[0m
+  [1m[35m (8.1ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160309150717')
+  [1m[36m (8.2ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160317171024')[0m
+  [1m[35m (8.1ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160309181838')
+  [1m[36m (8.2ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160309150313')[0m
+  [1m[35m (8.2ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160309150431')
+  [1m[36m (8.2ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160317171023')[0m
+  [1m[35m (8.1ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160309150304')
+  [1m[36m (8.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160315113055')[0m
+  [1m[35m (8.3ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20160316163509')
+  [1m[36m (8.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20160309150508')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mProduct Load (0.7ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mProduct Load (0.6ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mProduct Load (0.6ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mProduct Load (0.6ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mProduct Load (0.8ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mProduct Load (0.4ms)[0m  SELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mProduct Load (0.4ms)[0m  [1mSELECT "products".* FROM "products" INNER JOIN "baskets_products" ON "baskets_products"."product_id" = "products"."id" INNER JOIN "baskets" ON "baskets"."id" = "baskets_products"."basket_id" WHERE (baskets.id = NULL)[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK

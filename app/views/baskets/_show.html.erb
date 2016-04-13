@@ -1,0 +1,35 @@
+
+<table class="table">
+<caption>My Basket</caption>
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Products ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Cancel</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @basket.products.each do |product| %>
+            <tr>
+                <td><%= image_tag product.photo.url(:small) %></td>
+                <td><%= link_to "#{product.name}", action: 'edit', controller: '/products', id:product.id %></td>
+                <td><%= product.name %></td>
+                <td><%= product.price %></td>
+                <% @quantities = @basket.products_quantities %>
+                <td><%= @quantities[product.id]%></td>
+                <td><%= link_to  action: 'cancel_product', controller: '/baskets', product_id:product.id do%>
+                        <button class="btn btn-danger">Cancel</button>
+                    <%end%>
+                </td>
+            </tr>
+        <%end%>
+    </tbody>
+</table>
+
+<% if !@basket.nil? %>
+    <h3 > Total price : <small> <%= @total_price %> </small> </h3>
+<%end%>
+

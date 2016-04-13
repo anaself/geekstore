@@ -1,0 +1,21 @@
+
+<div class="row" style="background-color: #DDDDDD">
+    <% @products.each do |product| %>
+      <div class="col-sm-6 col-md-4" style="height:350px;margin-top: 1%">
+        <div class="thumbnail" style="height:350px ">
+          <div style="height:200px">
+            <%= image_tag product.photo.url(:medium), class: 'img-responsive'%>
+          </div>
+          <div class="caption">
+            <h4><%= product.name %></h4>
+            <p><strong>Price : </strong> <%= product.price %></p>
+            <p><strong>Color : </strong> <%= product.color %></p>
+            <p><%= link_to "Show", { action: 'show', controller: 'products', id: product.id },{ class: "btn btn-primary", role: "button"}%></p>
+          </div>
+        </div>
+      </div>
+    <%end%>
+</div>
+<div class="text-center">
+  <%= will_paginate @products, renderer: BootstrapPagination::Rails %>
+</div>

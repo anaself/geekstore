@@ -1,0 +1,22 @@
+<h1>Signup!</h1>
+
+<%= form_for @user, url: '/user/create' do |f| %>
+
+  <div>
+    FirstName: <%= f.text_field :first_name %>
+  </div>
+  <div>
+    LastName: <%= f.text_field :last_name %>
+  </div>
+  <div>
+    Email: <%= f.email_field :email %>
+  </div>
+  <div>
+    Password: <%= f.password_field :password %>
+  </div>
+  <div>
+    Phone: <%= f.phone_field :phone %>
+  </div>
+  <%= f.submit "Sign Up" %>
+
+<% end %>

@@ -1,0 +1,17 @@
+<%= form_for(@authentification) do |f| %>
+  <% if @authentification.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@authentification.errors.count, "error") %> prohibited this authentification from being saved:</h2>
+
+      <ul>
+      <% @authentification.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
