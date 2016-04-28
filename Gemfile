@@ -42,6 +42,9 @@ gem 'pry'
 
 gem 'ransack', '~> 1.7'
 
+gem "populator" # populate data
+gem "ffaker" # fake data
+gem "factory_girl_rails"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -68,10 +71,7 @@ gem 'spring'
 end
 
 group :test do
-  gem "ffaker" # fake data
-  gem "populator" # populate data
   gem "rspec-rails"
-  gem "factory_girl_rails"
 end
 
 
